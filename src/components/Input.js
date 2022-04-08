@@ -1,5 +1,5 @@
 import memeData from '../data.js'
-import meme from '../images/memeimg.png'
+import { useState } from 'react';
 
 
 export default function Input(){
@@ -14,6 +14,14 @@ export default function Input(){
         return memeImg;
     }
 
+
+
+    const [memeImgUrl, setMemeImgUrl] = useState(memeImg);
+    
+    function updateMeme (){
+        setMemeImgUrl(returnRandomMeme());
+    }
+
     return(
         <div className="inputs">
             <div className="form">
@@ -21,10 +29,10 @@ export default function Input(){
                     <input placeholder="TOP TEXT"  />
                     <input placeholder="BOTTOM TEXT"/>
                 </div>
-                <button onClick={returnRandomMeme}>Get new meme 🖼</button>
+                <button onClick={updateMeme}>Get new meme 🖼</button>
             </div>
             <div className="result">
-                <img src={memeImg} alt="meme" />
+                <img src={memeImgUrl} alt="meme" />
             </div>
         </div>
     )

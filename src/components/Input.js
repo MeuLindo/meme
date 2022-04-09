@@ -16,10 +16,22 @@ export default function Input(){
 
 
 
-    const [memeImgUrl, setMemeImgUrl] = useState(memeImg);
+    const [meme, setMeme] = useState({
+        randomImage: "http://i.imgflip.com/1bij.jpg",
+        topText: "",
+        bottomText: ""
+    });
     
+    const [allMemeImages, setAllMemeImages] = useState(memeData);
+
     function updateMeme (){
-        setMemeImgUrl(returnRandomMeme());
+        setMeme( prevState => {
+            return {
+                randomImage: returnRandomMeme(),
+                topText: prevState.topText,
+                bottomText: prevState.bottomText
+            }
+        });
     }
 
     return(
@@ -32,7 +44,7 @@ export default function Input(){
                 <button onClick={updateMeme}>Get new meme 🖼</button>
             </div>
             <div className="result">
-                <img src={memeImgUrl} alt="meme" />
+                <img src={meme.randomImage} alt="meme" />
             </div>
         </div>
     )

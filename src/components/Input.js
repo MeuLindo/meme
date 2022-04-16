@@ -21,8 +21,7 @@ export default function Input(){
         topText: "",
         bottomText: ""
     });
-    
-    // const [allMemeImages, setAllMemeImages] = useState(memeData);
+
 
     function updateMeme (){
         setMeme( prevState => {

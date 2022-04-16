@@ -22,7 +22,7 @@ export default function Input(){
         bottomText: ""
     });
     
-    const [allMemeImages, setAllMemeImages] = useState(memeData);
+    // const [allMemeImages, setAllMemeImages] = useState(memeData);
 
     function updateMeme (){
         setMeme( prevState => {
@@ -34,17 +34,42 @@ export default function Input(){
         });
     }
 
+    console.log(meme)
+
+    function handleChange(event){
+        const {name, value} = event.target;
+        
+        setMeme(prevState => {
+            return {
+                ...prevState,
+                [name]: value
+            }
+        });
+    }
+
     return(
         <div className="inputs">
             <div className="form">
                 <div className="input--fields">
-                    <input placeholder="TOP TEXT"  />
-                    <input placeholder="BOTTOM TEXT"/>
+                    <input 
+                        placeholder="TOP TEXT"
+                        name='topText'
+                        value={meme.topText}
+                        onChange={handleChange}
+                    />
+                    <input 
+                        placeholder="BOTTOM TEXT"
+                        name='bottomText'
+                        value={meme.bottomText}
+                        onChange={handleChange}
+                    />
                 </div>
                 <button onClick={updateMeme}>Get new meme 🖼</button>
             </div>
-            <div className="result">
-                <img src={meme.randomImage} alt="meme" />
+            <div className="meme">
+                <img src={meme.randomImage} className="meme--image" />
+                <h2 className="meme--text top">{meme.topText}</h2>
+                <h2 className="meme--text bottom">{meme.bottomText}</h2>
             </div>
         </div>
     )

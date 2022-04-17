@@ -1,75 +1,87 @@
-import memeData from '../data.js'
-import { useState } from 'react';
+import React from "react"
 
-
-export default function Input(){
-    let popMemes = memeData.data.memes;
-    let randomMeme = popMemes[Math.floor(Math.random() * popMemes.length)];
-    let memeImg = randomMeme.url;
-    function returnRandomMeme(){
-        
-        randomMeme = popMemes[Math.floor(Math.random() * popMemes.length)];
-        memeImg = randomMeme.url;
-        console.log(memeImg)
-        return memeImg;
-    }
-
-
-
-    const [meme, setMeme] = useState({
-        randomImage: "http://i.imgflip.com/1bij.jpg",
+export default function Meme() {
+    /**
+     * Challenge: 
+     * As soon as the Meme component loads the first time,
+     * make an API call to "https://api.imgflip.com/get_memes".
+     * 
+     * When the data comes in, save just the memes array part
+     * of that data to the `allMemes` state
+     * 
+     * Think about if there are any dependencies that, if they
+     * changed, you'd want to cause to re-run this function.
+     * 
+     * Hint: for now, don't try to use an async/await function.
+     * Instead, use `.then()` blocks to resolve the promises
+     * from using `fetch`. We'll learn why after this challenge.
+     */
+    
+    const [meme, setMeme] = React.useState({
         topText: "",
-        bottomText: ""
-    });
+        bottomText: "",
+        randomImage: "http://i.imgflip.com/1bij.jpg" 
+    })
+    const [allMemes, setAllMemes] = React.useState([])
 
+    React.useEffect(() => {
+        fetch("https://api.imgflip.com/get_memes")
+            .then(response => response.json())
+            .then(data => setAllMemes(data.data.memes))
+    }, [])
 
-    function updateMeme (){
-        setMeme( prevState => {
-            return {
-                randomImage: returnRandomMeme(),
-                topText: prevState.topText,
-                bottomText: prevState.bottomText
-            }
-        });
-    }
-
-    console.log(meme)
-
-    function handleChange(event){
-        const {name, value} = event.target;
+    // console.log(allMemes)
+    
+    function getMemeImage() {
+        const memesArray = allMemes
+        const randomNumber = Math.floor(Math.random() * memesArray.length)
+        const url = memesArray[randomNumber].url
+        setMeme(prevMeme => ({
+            ...prevMeme,
+            randomImage: url
+        }))
         
-        setMeme(prevState => {
-            return {
-                ...prevState,
-                [name]: value
-            }
-        });
     }
-
-    return(
-        <div className="inputs">
+    
+    function handleChange(event) {
+        const {name, value} = event.target
+        setMeme(prevMeme => ({
+            ...prevMeme,
+            [name]: value
+        }))
+    }
+    
+    return (
+        <main>
             <div className="form">
-                <div className="input--fields">
-                    <input 
-                        placeholder="TOP TEXT"
-                        name='topText'
-                        value={meme.topText}
-                        onChange={handleChange}
-                    />
-                    <input 
-                        placeholder="BOTTOM TEXT"
-                        name='bottomText'
-                        value={meme.bottomText}
-                        onChange={handleChange}
-                    />
-                </div>
-                <button onClick={updateMeme}>Get new meme 🖼</button>
+                <input 
+                    type="text"
+                    placeholder="Top text"
+                    className="form--input"
+                    name="topText"
+                    value={meme.topText}
+                    onChange={handleChange}
+                />
+                <input 
+                    type="text"
+                    placeholder="Bottom text"
+                    className="form--input"
+                    name="bottomText"
+                    value={meme.bottomText}
+                    onChange={handleChange}
+                />
+                <button 
+                    className="form--button"
+                    onClick={getMemeImage}
+                >
+                    Get a new meme image 🖼
+                </button>
             </div>
             <div className="meme">
                 <img src={meme.randomImage} className="meme--image" />
                 <h2 className="meme--text top">{meme.topText}</h2>
                 <h2 className="meme--text bottom">{meme.bottomText}</h2>
             </div>
-        </div>
+        </main>
     )
 }

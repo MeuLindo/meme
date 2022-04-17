@@ -37,10 +37,12 @@
 
 input{
   height: 2rem;
-  width: 210px;
+  width: 225px;
   border-radius: 5px;
   border-color: thistle;
   text-indent: 5px;
+  margin-bottom: 20px;
+  margin-left: 10px;
 }
 
 button{
@@ -53,6 +55,7 @@ button{
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  width: 477px;
 }
 
 .meme > img{
